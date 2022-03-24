@@ -18,18 +18,19 @@ contract SuidToken is ERC20, Ownable {
 
     mapping(address => uint256) internal rewards;
 
-    uint256 tokenPrice = 100;
+    uint256 tokenPriceRate = 100;
 
     constructor(uint256 _supply) ERC20("Suid", "SUD") {
         _mint(msg.sender, _supply);
     }
 
-    function buyToken(uint256 _amount) public{
-        _mint(msg.sender, _amount);
+    function buyToken(uint256 _amount) public payable{
+        uint256 token = _amount * tokenPriceRate;
+        _mint(msg.sender, token);
     }
 
     function modifyTokenBuyPrice(uint256 newPrice) public onlyOwner {
-        tokenPrice = newPrice;
+        tokenPriceRate = newPrice;
     }
 
     function stake(uint256 _stake) public {
